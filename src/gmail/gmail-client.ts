@@ -26,13 +26,33 @@ interface Header {
 const getHeader = (headers: Header[], name: string): string =>
   headers.find((h) => h.name?.toLowerCase() === name.toLowerCase())?.value ?? "";
 
-const extractPlainText = (part: MessagePart): string => {
+const decodeBase64url = (data: string): string =>
+  Buffer.from(data, "base64url").toString("utf-8");
+
+const stripHtml = (html: string): string =>
+  html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, "\"")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+const extractText = (part: MessagePart): string => {
   if (part.mimeType === "text/plain" && part.body?.data) {
-    return Buffer.from(part.body.data, "base64url").toString("utf-8");
+    return decodeBase64url(part.body.data);
   }
   for (const child of part.parts ?? []) {
-    const text = extractPlainText(child);
+    const text = extractText(child);
     if (text) return text;
+  }
+  // Fallback: strip HTML if no plain-text part exists
+  if (part.mimeType === "text/html" && part.body?.data) {
+    return stripHtml(decodeBase64url(part.body.data));
   }
   return "";
 };
@@ -51,7 +71,7 @@ export class GmailClient {
   async initialize(): Promise<void> {
     const tokens = await loadTokens();
     if (!tokens) {
-      throw new Error("No OAuth tokens found. Run `learning auth` first.");
+      throw new Error("No OAuth tokens found. Run `astropath auth` first.");
     }
     this.auth.setCredentials(tokens);
     this.auth.on("tokens", async (refreshed) => {
@@ -60,12 +80,12 @@ export class GmailClient {
     });
   }
 
-  async fetchUnread(n: number): Promise<Email[]> {
+  async fetchUnread(n: number, query = "is:unread"): Promise<Email[]> {
     const gmail = google.gmail({ version: "v1", auth: this.auth });
 
     const list = await gmail.users.messages.list({
       userId: "me",
-      q: "is:unread",
+      q: query,
       maxResults: n,
     });
 
@@ -87,7 +107,7 @@ export class GmailClient {
           date: new Date(parseInt(full.data.internalDate ?? "0", 10)),
           sender: getHeader(headers, "From"),
           subject: getHeader(headers, "Subject"),
-          body: extractPlainText(payload as MessagePart),
+          body: extractText(payload as MessagePart),
         };
       }),
     );

@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 
 import type { Credentials } from "google-auth-library";
 
-const TOKEN_PATH = join(homedir(), ".config", "learning", "token.json");
+const TOKEN_PATH = join(homedir(), ".config", "astropath", "token.json");
 
 export const saveTokens = async (credentials: Credentials): Promise<void> => {
     await mkdir(dirname(TOKEN_PATH), { recursive: true });

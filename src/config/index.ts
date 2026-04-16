@@ -13,6 +13,7 @@ export interface Config {
         redirectUri: string;
     };
     emailBatchSize: number;
+    emailQuery: string;
 };
 
 /**
@@ -35,4 +36,5 @@ export const config: Config = {
         redirectUri: process.env.GOOGLE_REDIRECT_URI ?? "http://localhost:3000/oauth/callback",
     },
     emailBatchSize: parseInt(process.env.EMAIL_BATCH_SIZE ?? "10", 10),
+    emailQuery: process.env.EMAIL_QUERY ?? "is:unread -category:promotions -category:social",
 };

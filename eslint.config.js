@@ -10,6 +10,7 @@ module.exports = tseslint.config([
       perfectionist,
     },
     rules: {
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       semi: ["error", "always"],
       quotes: ["error", "double"],
       "comma-dangle": ["error", "always-multiline"],
