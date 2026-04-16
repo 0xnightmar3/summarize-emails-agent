@@ -39,9 +39,9 @@ const main = async () => {
     };
 
     console.error("Usage:");
-    console.error(" learning auth");
-    console.error(" learning summarize");
-    console.error(" learning <prompt>");
+    console.error(" astropath auth");
+    console.error(" astropath summarize");
+    console.error(" astropath <prompt>");
     process.exit(1);
 };
 

@@ -1,8 +1,8 @@
 {
-  "name": "learning",
+  "name": "astropath",
   "version": "1.0.0",
   "bin": {
-    "learning": "dist/main.js"
+    "astropath": "dist/main.js"
   },
   "main": "index.js",
   "scripts": {

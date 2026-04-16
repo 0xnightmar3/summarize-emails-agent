@@ -1,13 +1,17 @@
-# Claude Email Summarizer
+# Astropath
 
-Fetches unread Gmail messages and summarizes each one using Claude. Summaries are persisted to a local JSONL file for later review. Designed to run on a cron schedule.
+*"Thought for the day: A mind without purpose will wander in dark places."*
+
+An Astropath receives transmissions from across the void and distills them into intelligence the Imperium can act upon. This one reads your Gmail.
+
+Fetches unread messages and summarizes each one using Claude. Summaries are persisted to a local JSONL file for later review. Designed to run on a cron schedule.
 
 ## Setup
 
 1. Copy `.env.example` to `.env` and fill in your credentials
 2. Run `npm install`
 3. Run `npm run build`
-4. Authenticate with Google: `learning auth`
+4. Authenticate with Google: `astropath auth`
 
 ### Environment variables
 
@@ -26,13 +30,13 @@ Fetches unread Gmail messages and summarizes each one using Claude. Summaries ar
 
 ```bash
 # One-time Google OAuth authorization
-learning auth
+astropath auth
 
 # Summarize unread emails
-learning summarize
+astropath summarize
 
 # Run agent with a prompt
-learning <prompt>
+astropath <prompt>
 ```
 
 ## Cron
@@ -44,4 +48,3 @@ To summarize emails every day at 8am, add the following to your crontab (`cronta
 ```
 
 > If you upgrade Node via nvm, update the path to `node` in the crontab entry.
-
