@@ -44,7 +44,7 @@ astropath <prompt>
 To summarize emails every day at 8am, add the following to your crontab (`crontab -e`):
 
 ```
-0 8 * * * cd /home/tex/Programming/Claude_API/Learning && /home/tex/.nvm/versions/node/v22.17.1/bin/node dist/main.js summarize >> data/cron.log 2>&1
+0 8 * * * cd /path/to/astropath && /path/to/.nvm/versions/node/<version>/bin/node dist/main.js summarize >> data/cron.log 2>&1
 ```
 
 > If you upgrade Node via nvm, update the path to `node` in the crontab entry.
