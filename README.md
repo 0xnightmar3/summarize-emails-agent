@@ -39,6 +39,24 @@ astropath summarize
 astropath <prompt>
 ```
 
+## Dashboard UI
+
+A Streamlit web dashboard for browsing and searching your email summaries.
+
+Reads from the same `data/email-summaries.jsonl` file and displays top-level metrics (total emails, unique senders, token usage, avg processing time), a sidebar with sender/date/search filters, and expandable cards showing each email's summary and token stats. Data auto-refreshes every 60 seconds.
+
+### Running the dashboard
+
+```bash
+cd python_ui
+pip install streamlit pandas
+streamlit run app.py
+```
+
+Then open [http://localhost:8501](http://localhost:8501) in your browser.
+
+> The dashboard expects `data/email-summaries.jsonl` to exist in the project root. Run `astropath summarize` at least once first.
+
 ## Cron
 
 To summarize emails every day at 8am, add the following to your crontab (`crontab -e`):
